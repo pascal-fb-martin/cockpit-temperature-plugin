@@ -20,12 +20,22 @@ window.onload = function () {
                }
             }
         });
-        var proc = cockpit.spawn(["vcgencmd", "measure_temp"]);
+        proc = cockpit.spawn(["vcgencmd", "measure_temp"]);
         proc.done(function(data){
 	        pt = parseFloat(data.match(/temp[=]([0-9\.]+)/)[1]);
             if (pt) {
 	            series[i] = new TimeSeries();
                 chart.addTimeSeries(series[i], stokes[i%stokes.length]);
+            }
+	    });
+        cockpit.file("/etc/armbianmonitor/datasources/soctemp").read()
+        .done(function(data, tag){
+            if (data) {
+	           pt = parseFloat(data.match(/([0-9]+)/)[1]) / 1000;
+               if (pt) {
+	               series[i] = new TimeSeries();
+                   chart.addTimeSeries(series[i], stokes[i%stokes.length]);
+               }
             }
 	    });
     };
@@ -34,13 +44,15 @@ window.onload = function () {
 
     function run_proc(series) {
         var i = 0;
+        var now = new Date().getTime();
+
         var proc = cockpit.spawn(["sensors"]);
         proc.done(function(data){
             pts = data.match(/temp1:[\t ]+[+]*[0-9\.]+/g);
             if (pts) {
                for (i = 0; i < pts.length; i++) {
                   pt = parseFloat(pts[i].match(/temp1:[\t ]+[+]*([0-9\.]+)/)[1]);
-                  series[i].append(new Date().getTime(), pt);
+                  series[i].append(now, pt);
                }
             }
         });
@@ -48,7 +60,16 @@ window.onload = function () {
         proc.done(function(data){
 	        pt = parseFloat(data.match(/temp[=]([0-9\.]+)/)[1]);
             if (pt) {
-                series[i].append(new Date().getTime(), pt);
+                series[i].append(now, pt);
+            }
+	    });
+        cockpit.file("/etc/armbianmonitor/datasources/soctemp").read()
+        .done(function(data, tag){
+            if (data) {
+               pt = parseFloat(data.match(/([0-9]+)/)[1]) / 1000;
+               if (pt) {
+	               series[i].append(now, pt);
+               }
             }
 	    });
     };
@@ -61,11 +82,3 @@ function resize_canvas() {
     document.getElementById("smoothie-chart").width = window.innerWidth - 50;
 }
 
-function average(array) {
-    var sum = 0;
-    var count = array.length;
-    for (var i = 0; i < count; i++) {
-      sum = sum + array[i];
-    }
-    return sum / count;
-  }
