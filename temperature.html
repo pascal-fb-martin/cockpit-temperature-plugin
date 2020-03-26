@@ -4,6 +4,7 @@
 <head>
     <title>Temperature</title>
     <meta charset="utf-8">
+    <link href="temperature.css" type="text/css" rel="stylesheet">
     <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
     <script src="../base1/jquery.js"></script>
     <script src="../base1/cockpit.js"></script>
@@ -21,16 +22,10 @@
     <div align=center>
         <table id=table style="width:100%;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
             <tr>
-                <th colspan="2" style="font-size:24pt;text-align:center">CPU Temperature</th>
+                <th colspan="2" style="font-size:24pt;text-align:center">System Temperature Sensors</th>
             </tr>
             <tr>
                 <td colspan="2" style="text-align:center;width:100%"><canvas id="smoothie-chart" height="300"></canvas></td>
-            </tr>
-            <tr>
-                <th style="text-align:right;width:40%;padding:4px">Current Temperature [°C]:</th><td id="cur_temp" style="text-align:left;width: 60%"></td>
-            </tr>
-            <tr>
-                <th style="text-align:right;padding:4px">Average Temperature [°C](5m):</th><td id=avg_temp style="text-align:left"></td>
             </tr>
         </table>
     </div>

@@ -1,0 +1,10 @@
+div.smoothie-chart-tooltip {
+  background: #E0E000;
+  padding: 1em;
+  margin-top: 20px;
+  font-family: consolas;
+  color: black;
+  font-size: 12px;
+  pointer-events: none;
+}
+
