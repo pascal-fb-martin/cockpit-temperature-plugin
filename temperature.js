@@ -12,7 +12,7 @@ window.onload = function () {
         var i = 0;
         var proc = cockpit.spawn(["sensors"]);
         proc.done(function(data){
-            pts = data.match(/temp1:[\t ]+[+]*[0-9\.]+/g);
+            pts = data.match(/temp[1-9]:[\t ]+[+]*[0-9\.]+/g);
             if (pts) {
                for (i = 0; i < pts.length; i++) {
                   series[i] = new TimeSeries();
@@ -48,10 +48,10 @@ window.onload = function () {
 
         var proc = cockpit.spawn(["sensors"]);
         proc.done(function(data){
-            pts = data.match(/temp1:[\t ]+[+]*[0-9\.]+/g);
+            pts = data.match(/temp[1-9]:[\t ]+[+]*[0-9\.]+/g);
             if (pts) {
                for (i = 0; i < pts.length; i++) {
-                  pt = parseFloat(pts[i].match(/temp1:[\t ]+[+]*([0-9\.]+)/)[1]);
+                  pt = parseFloat(pts[i].match(/temp[1-9]:[\t ]+[+]*([0-9\.]+)/)[1]);
                   series[i].append(now, pt);
                }
             }
